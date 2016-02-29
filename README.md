@@ -1,33 +1,33 @@
-Kraken GO API Client
-====================
+# Client for [Kraken API](https://www.kraken.com/help/api)
 
-A simple API Client for the [Kraken](https://www.kraken.com/ "Kraken") Trading platform.
+A simple Kraken API client.
 
-Example usage:
+Example of usage:
 
 ```go
 package main
 
 import (
-	"fmt"
-	"github.com/Beldur/kraken-go-api-client"
+    "fmt"
+    "github.com/ivanlemeshev/kraken"
+)
+
+const (
+    KrakenAPIKey = "KEY"
+    KrakenAPISecret = "SECRET"
 )
 
 func main() {
-	api := NewKrakenApi("KEY", "SECRET")
-	result, err := api.Query("Ticker", map[string]string{
-		"pair": "XXBTZEUR",
-	})
+    api := kraken.New(KrakenAPIKey, KrakenAPISecret)
+    result, err := api.Query("Ticker", map[string]string{
+        "pair": "XXBTZUSD",
+    })
 
-	if err != nil {
-		fmt.Println("Error:", err.Error())
-		return
-	}
+    if err != nil {
+        fmt.Println("Error:", err.Error())
+        return
+    }
 
-	fmt.Printf("Result: %+v\n", result)
+    fmt.Printf("Result: %+v\n", result)
 }
 ```
-
-If you find this useful, you can send me a fraction of a bitcoin!
-
-1Q3P96LcTkbS9VwZkV5ndQa6t4EcR4GzSL
