@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -82,6 +83,34 @@ func (api *APIClient) Query(method string, data map[string]string) (interface{},
 		return api.queryPrivate(method, values)
 	}
 	return nil, fmt.Errorf("Method '%s' is not valid!", method)
+}
+
+// GetDepthRate returns Kraken Depth rate
+func GetDepthRate(result interface{}, pair, operation string, index int) (float64, error) {
+	row := parseDepthResult(result, pair, operation, index)
+	rate, err := strconv.ParseFloat(row[0].(string), 64)
+	if err != nil {
+		return rate, err
+	}
+	return rate, nil
+}
+
+// GetDepthAmount returns Kraken Depth amount
+func GetDepthAmount(result interface{}, pair, operation string, index int) (float64, error) {
+	row := parseDepthResult(result, pair, operation, index)
+	rate, err := strconv.ParseFloat(row[1].(string), 64)
+	if err != nil {
+		return rate, err
+	}
+	return rate, nil
+}
+
+// parseDepthResult returns Kraken Depth response row
+func parseDepthResult(result interface{}, pair, operation string, index int) []interface{} {
+	krakenResult := result.(map[string]interface{})[pair].(map[string]interface{})
+	krakenResultOperation := krakenResult[operation].([]interface{})
+	krakenResultOperationRow := krakenResultOperation[index].([]interface{})
+	return krakenResultOperationRow
 }
 
 // queryPublic executes a public method query
