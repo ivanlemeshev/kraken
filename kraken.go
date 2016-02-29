@@ -1,4 +1,4 @@
-package krakenapi
+package kraken
 
 import (
 	"crypto/hmac"
